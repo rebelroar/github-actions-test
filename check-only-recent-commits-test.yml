@@ -1,0 +1,46 @@
+name: Check YAML Syntax
+
+on:
+  push:
+    paths:
+      - '**/*.yaml'
+      - '**/*.yml'
+
+jobs:
+  check-syntax:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Check if yamllint is installed
+        run: |
+          if ! command -v yamllint &> /dev/null
+          then
+              sudo apt-get update
+              sudo apt-get install -y yamllint
+          fi
+
+      - name: Cache yamllint
+        uses: actions/cache@v3
+        with:
+          path: |
+            /usr/lib/python3/dist-packages/yamllint/
+          key: yamllint-${{ runner.os }}-${{ hashFiles('**/*.yml') }}
+
+      - name: Validate YAML syntax
+        run: |
+          # Get the list of changed YAML files
+          files=$(git diff --name-only ${{ github.event.before }} ${{ github.sha }} | grep -E '\.ya?ml$')
+
+          # If there are changed YAML files, validate them
+          if [ -n "$files" ]; then
+            for file in $files; do
+              yamllint $file
+            done
+          else
+            echo "No YAML files changed."
+          fi
+        env:
+          CI: true
