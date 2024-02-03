@@ -12,22 +12,22 @@ jobs:
   check-syntax:
     runs-on: ubuntu-latest
 
-# For Checkout code it's going to "https://github.com/actions/checkout" version v2, 
-# At "https://github.com/actions" you can find lot of already written repositories which can be used
+    # For Checkout code it's going to "https://github.com/actions/checkout" version v2, 
+    # At "https://github.com/actions" you can find lot of already written repositories which can be used
     steps:
     - name: Checkout code
       uses: actions/checkout@v2
 
-# Installing yamllint
+    # Installing yamllint
     - name: Install yamllint
       run: |
         sudo apt-get update
         sudo apt-get install -y yamllint
 
-# Above yamllint installation will happen on each commit.
-# We will cache installation usig below steps
+    # Above yamllint installation will happen on each commit.
+    # We will cache installation usig below steps
 
-# Validating yaml file using yamallin
+    # Validating yaml file using yamallin
     - name: Validate YAML syntax
       run: |
         for file in $(find . -name '*.yaml' -or -name '*.yml'); do
