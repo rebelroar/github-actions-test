@@ -1,0 +1,5 @@
+1.  Sometimes it's able to cache yamllint installation sometime it's not.
+    Note - Cache get stored in the form of key-value pair. I am suspecting it's somewhere related to that.
+    Check old commits for reference.
+
+2.  In every check it's checking whole repo, not just newly committed files.
