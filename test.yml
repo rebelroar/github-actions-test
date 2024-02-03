@@ -13,7 +13,7 @@ spec:
   template:
     metadata:
       labels:
-      environment: production
+        environment: production
         app: nginx
     spec:
       containers:
