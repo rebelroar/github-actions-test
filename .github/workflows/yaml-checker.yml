@@ -6,26 +6,26 @@ on:
     paths:
       - '**/*.yaml'
       - '**/*.yml'
-      
+
 # Creating a job with name "check-syntax" in ubuntu environment
 jobs:
   check-syntax:
     runs-on: ubuntu-latest
-    
+
     # For Checkout code, more in README file
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
-        
+
       # Installing yamllint
       - name: Install yamllint
         run: |
           sudo apt-get update
           sudo apt-get install -y yamllint
-          
+
       # Above yamllint installation will happen on each commit.
       # We will cache installation usig below steps
-      
+
       # Validating yaml file using yamallin
       - name: Validate YAML syntax
         run: |
