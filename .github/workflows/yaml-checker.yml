@@ -18,13 +18,27 @@ jobs:
         uses: actions/checkout@v2
 
       # Installing yamllint
-      - name: Install yamllint
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y yamllint
+      #- name: Install yamllint
+      #  run: |
+      #    sudo apt-get update
+      #    sudo apt-get install -y yamllint
 
       # Above yamllint installation will happen on each commit.
       # We will cache installation usig below steps
+      - name: Cache yamllint
+        uses: actions/cache@v2
+        with:
+          path: |
+            /usr/lib/python3/dist-packages/yamllint/
+          key: yamllint-${{ runner.os }}-${{ hashFiles('**/*.yml') }}
+
+      - name: Check if yamllint is installed
+        run: |
+          if ! command -v yamllint &> /dev/null
+          then
+              sudo apt-get update
+              sudo apt-get install -y yamllint
+          fi
 
       # Validating yaml file using yamallin
       - name: Validate YAML syntax
