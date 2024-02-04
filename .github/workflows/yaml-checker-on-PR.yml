@@ -1,4 +1,4 @@
-name: Check YAML Syntax
+name: Check YAML Syntax only on PR
 
 on:
   pull_request:
