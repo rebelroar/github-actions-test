@@ -1,5 +1,6 @@
-# github-actions-test
-At below repo you can find already writtent github actions
+# Github Actions
+
+In below repo you can find already written github actions
 
 **Repo -** https://github.com/actions
 
