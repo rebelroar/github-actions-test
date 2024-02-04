@@ -1,0 +1,29 @@
+name: Check YAML Syntax
+
+on:
+  pull_request:
+    paths:
+      - '**/*.yaml'
+      - '**/*.yml'
+
+# Creating a job with name "check-syntax" in ubuntu environment
+jobs:
+  check-syntax:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Check if yamllint is installed
+        run: |
+              sudo apt-get update
+              sudo apt-get install -y yamllint
+
+      - name: Validate YAML syntax
+        run: |
+          for file in $(find . -name '*.yaml' -or -name '*.yml'); do
+            yamllint $file
+          done
+        env:
+          CI: true
