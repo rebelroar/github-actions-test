@@ -2,6 +2,8 @@ kind: Service
 apiVersion: v1
 metadata:
   name: demoservice
+  labels:
+    env: testing
 spec:
   ports:
     - port: 80
