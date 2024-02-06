@@ -1,0 +1,50 @@
+name: Check YAML Syntax
+
+# Running on every commits with .yml or .yaml
+on:
+  push:
+    paths:
+      - '**/*.yaml'
+      - '**/*.yml'
+
+# Creating a job with name "check-syntax" in ubuntu environment
+jobs:
+  check-syntax:
+    runs-on: ubuntu-latest
+
+    # For Checkout code, more in README file
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      # Installing yamllint
+      #- name: Install yamllint
+      #  run: |
+      #    sudo apt-get update
+      #    sudo apt-get install -y yamllint
+
+      # Above yamllint installation will happen on each commit.
+      # We will cache installation usig below steps
+      - name: Cache yamllint
+        uses: actions/cache@v2
+        with:
+          path: |
+            /usr/lib/python3/dist-packages/yamllint/
+          key: yamllint-${{ runner.os }}-${{ hashFiles('**/*.yml') }}
+
+      - name: Check if yamllint is installed
+        run: |
+          if ! command -v yamllint &> /dev/null
+          then
+              sudo apt-get update
+              sudo apt-get install -y yamllint
+          fi
+
+      # Validating yaml file using yamallint
+      - name: Validate YAML syntax
+        run: |
+          for file in $(find . -name '*.yaml' -or -name '*.yml'); do
+            yamllint $file
+          done
+        env:
+          CI: true
